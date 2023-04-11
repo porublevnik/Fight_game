@@ -31,14 +31,11 @@ class Skill(ABC):
     def skill_effect(self) -> str:
         pass
 
-    def _is_stamina_enough(self):
-        return self.user.stamina > self.stamina
+    def _is_stamina_enough(self) -> bool:
+        return self.user.stamina >= self.stamina
 
     def use(self, user: BaseUnit, target: BaseUnit) -> str:
-        """
-        Проверка, достаточно ли выносливости у игрока для применения умения.
-        Для вызова скилла везде используем просто use
-        """
+
         self.user = user
         self.target = target
         if self._is_stamina_enough:
@@ -47,22 +44,21 @@ class Skill(ABC):
 
 
 class FuryPunch(Skill):
-    name = ...
-    stamina = ...
-    damage = ...
+    name: str = 'Свирепый пинок'
+    stamina: float = 6
+    damage: float = 12
 
-    def skill_effect(self):
-        # TODO логика использования скилла -> return str
-        # TODO в классе нам доступны экземпляры user и target - можно использовать любые их методы
-        # TODO именно здесь происходит уменшение стамины у игрока применяющего умение и
-        # TODO уменьшение здоровья цели.
-        # TODO результат применения возвращаем строкой
-        pass
+    def skill_effect(self) -> str:
+        self.user.stamina -= self.stamina
+        self.target.get_damage(self.damage)
+        return f'{self.user.name} использует {self.name} и наносит {self.damage} урона сопернику.'
 
 class HardShot(Skill):
-    name = ...
-    stamina = ...
-    damage = ...
+    name: str = 'Мощный укол'
+    stamina: float = 5
+    damage: float = 15
 
-    def skill_effect(self):
-        pass
+    def skill_effect(self) -> str:
+        self.user.stamina -= self.stamina
+        self.target.get_damage(self.damage)
+        return f'{self.user.name} использует {self.name} и наносит {self.damage} урона сопернику.'
