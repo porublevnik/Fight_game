@@ -1,4 +1,4 @@
-# Flask-REST-API
+# Fight_game
 ## Игра по типу "Бойцовского клуба
 
 **Python3.10, Flask 2.0.2
